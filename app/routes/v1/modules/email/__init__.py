@@ -39,19 +39,19 @@ INSERT_TEMPLATE = """
     RETURNING id;
 """
 
-images = ["https://d35pnp6c7e171b.cloudfront.net/templates/temp4.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp6.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp7.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp1.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp2.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp3.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp5.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp8.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp9.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp10.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp11.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp12.png",
-          "https://d35pnp6c7e171b.cloudfront.net/templates/temp13.png"]
+images = ["https://humbee-1.azureedge.net/flasho/templates/temp4.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp6.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp7.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp1.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp2.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp3.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp5.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp8.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp9.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp10.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp11.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp12.png",
+          "https://humbee-1.azureedge.net/flasho/templates/temp13.png"]
 
 
 def add_default_templates(db_cursor):
