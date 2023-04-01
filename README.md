@@ -1,4 +1,4 @@
-<p align="center"><a  href="https://flasho.io/"><img  src="https://d35pnp6c7e171b.cloudfront.net/assets/flasho_banner.png"  height="100"/></a></p>
+<p align="center"><a  href="https://flasho.io/"><img  src="https://humbee-1.azureedge.net/flasho/flasho_banner.png"  height="100"/></a></p>
 
 <h1 align="center">🚀 Open Source Customer Notifications for developers⚡️</h1>
 <div align="center">The fastest tool to set up customer notifications. Set it up in minutes with little to no code. </div>
@@ -18,7 +18,7 @@
 
 </p>
 
-<p align="center"><a  href="https://flasho.io/"><img  src="https://d35pnp6c7e171b.cloudfront.net/assets/demo_compressed.gif"  height="auto" width="100%"/></a></p>
+<p align="center"><a  href="https://flasho.io/"><img  src="https://humbee-1.azureedge.net/flasho/demo_compressed.gif"  height="auto" width="100%"/></a></p>
 
 ## Why Flasho? 🧐
 
@@ -56,6 +56,7 @@ Docker deployment is available for the following cloud environments.
 ## Using Flasho locally using Docker ⚡️
 
 1. Clone the repository
+
 
 ```jsx
   git clone --depth 1 https://github.com/flashohq/flasho.git
