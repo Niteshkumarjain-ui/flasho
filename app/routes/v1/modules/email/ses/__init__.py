@@ -9,7 +9,8 @@ from fastapi import HTTPException, Response
 import app.routes.v1.modules.email as email_service
 from app.utils import config
 from dotenv import load_dotenv
-
+import logging 
+logger = logging.getLogger("app")
 
 class SESParameters(BaseModel):
     aws_access_key_id: str
@@ -51,7 +52,7 @@ def initialize_ses_service(ses_parameters: SESParameters):
             ]
         )
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in intiallizing ses service : {e}")
         raise HTTPException(status_code=400, detail={
             'status': 'failed',
             'message': 'aws credentials are incorrect'
@@ -125,8 +126,7 @@ def send_email_ses(email_parameters: EmailParameters, http_response: Response):
             "service_response": response
         }
     except Exception as e:
-        print("ERROR: ", e)
-
+        logger.exception(f"Error in sending email ses  : {e}")
         http_response.status_code = 500
         return {
             'status': 'failed',

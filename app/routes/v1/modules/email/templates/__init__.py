@@ -5,7 +5,8 @@ from psycopg2.extras import Json
 
 from app.db import get_cursor, validate_db_connection
 from app.routes.v1.modules import email
-
+import logging 
+logger = logging.getLogger("app")
 
 GET_DEFAULT_TEMPLATES = """ SELECT * FROM tgf_catalog.email_templates
                             WHERE user_created=false; """
@@ -43,7 +44,7 @@ def get_email_templates(template_type: str):
             return {"default_templates": get_default_templates(), "user_created_templates": get_created_templates()}
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in getting email templates: {e}")
         raise HTTPException(status_code=500, detail={
             'status': 'failed',
             'message': 'Database error, check if email service is initialized'
@@ -87,7 +88,7 @@ def create_email_template(email_template: EmailTemplate):
         return template_id
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in creating email template : {e}")
         raise HTTPException(status_code=500, detail={
             'status': 'failed',
             'message': 'Template names must be unique'

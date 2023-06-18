@@ -5,7 +5,8 @@ import os
 import requests
 import json
 from app.db import get_cursor, validate_db_connection
-
+import logging 
+logger = logging.getLogger("app")
 GET_TEMPLATE_CONFIG = """
             SELECT phone_number_column, country_code_column, contains_country_code
             FROM tgf_catalog.sms_templates
@@ -62,7 +63,7 @@ def send_sms_request(template_id, phone_number, variables_data):
     req_headers = {
         'x-admin-secret-key': 'hello@123'
     }
-    print(req_body)
+    logger.info(f"request body is : {req_body}")
     res = requests.post(url=endpoint, data=req_body, headers=req_headers)
     return res.json()
 

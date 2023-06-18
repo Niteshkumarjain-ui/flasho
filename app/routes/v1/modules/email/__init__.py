@@ -11,7 +11,8 @@ from . import twilio_sendgrid
 from . import pinpoint
 from app.db import get_cursor, validate_db_connection
 from .templates import get_email_templates, create_email_template, EmailTemplate
-
+import logging 
+logger = logging.getLogger("app")
 router = APIRouter()
 
 CREATE_SCHEMA_AND_TABLE = """
@@ -76,10 +77,11 @@ def initialize_email_db():
         db_cursor = get_cursor()
         db_cursor.execute(CREATE_SCHEMA_AND_TABLE)
         templates = db_cursor.fetchall()
-        print(templates)
+        logger.info(f"templates are : {templates}")
         if (len(templates) == 0):
             add_default_templates(db_cursor)
     except Exception as e:
+        logger.exception(f"Error in intiallizing email db : {e}")
         raise HTTPException(status_code=500, detail={
             'status': 'failed',
             'message': 'Database error'
@@ -197,7 +199,7 @@ def send_templated_email(template_id: int, receipient_addresses: list[EmailStr],
                 "{{{{{}}}}}".format(key), str(variable_info))
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in sending email template : {e}")
         raise HTTPException(status_code=400, detail={
             'status': 'failed',
             'message': 'variable/conditions error, check if the column name is present in trigger data and condition is a python boolean expression'

@@ -1,4 +1,6 @@
 from app.db import get_cursor, validate_db_connection
+import logging 
+logger = logging.getLogger("app")
 
 GET_COLUMNS = "SELECT column_name, data_type FROM  information_schema.columns WHERE table_name = '{table}' and table_schema = '{schema}';"
 
@@ -11,7 +13,7 @@ def read_columns(schema, table):
     db_cursor.execute(GET_COLUMNS.format(schema=schema, table=table))
 
     columns = db_cursor.fetchall()
-    print(columns)
+    logger.info(f"columns are : {columns}")
     columns = [{"name": column['column_name'],
                 "data_type": column['data_type']}for column in columns]
 

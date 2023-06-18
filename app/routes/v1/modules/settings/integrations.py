@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 from app.utils import config
 
 from app.utils import config
-
+import logging 
+logger = logging.getLogger("app")
 
 def get_integrations():
     load_dotenv()

@@ -9,7 +9,8 @@ from fastapi import HTTPException, Response
 import app.routes.v1.modules.email as email_service
 from app.utils import config
 from dotenv import load_dotenv
-
+import logging 
+logger = logging.getLogger("app")
 
 class PinpointEMailParameters(BaseModel):
     aws_access_key_id: str
@@ -26,6 +27,7 @@ def initialize_pinpoint_email_service(pinpoint_email_params: PinpointEMailParame
                            aws_secret_access_key=pinpoint_email_params.aws_secret_access_key,
                            region_name=pinpoint_email_params.aws_region)
         sts.get_caller_identity()
+
     except Exception as e:
         raise HTTPException(status_code=400, detail={
             'status': 'Invalid credentials',
@@ -45,7 +47,7 @@ def initialize_pinpoint_email_service(pinpoint_email_params: PinpointEMailParame
         )
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in initialize pinpoint email service: {e}")
         raise HTTPException(status_code=400, detail={
             'status': 'failed',
             'message': 'aws credentials are incorrect'
@@ -138,6 +140,7 @@ def send_email_pinpoint(email_parameters: PinpointParameters, http_response: Res
             "service_response": response
         }
     except Exception as e:
+        logger.exception(f"Error in sending pinpoint email : {e}")
         print("ERROR: ", e)
 
         http_response.status_code = 500

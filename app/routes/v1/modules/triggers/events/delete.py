@@ -1,6 +1,8 @@
 from fastapi import HTTPException
 from app.db import get_cursor
 from psycopg2 import sql
+import logging 
+logger = logging.getLogger("app")
 
 DELETE_TRIGGER = """
    DROP TRIGGER {trigger_name}
@@ -62,7 +64,7 @@ def delete_trigger(id):
                 template_type="email_templates", id=trigger["email_template_id"]))
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in deleting trigger : {e}")
         raise HTTPException(
             status_code=500, detail={"status": "failed", "message": "delete error"}
         )

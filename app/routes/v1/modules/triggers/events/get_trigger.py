@@ -1,4 +1,6 @@
 from app.db import get_cursor
+import logging 
+logger = logging.getLogger("app")
 
 GET_TRIGGER_AND_TEMPLATE = """
     SELECT et.id, et.name, et.type, et.table_name, et.schema_name, et.foreign_key_column, et.configuration, et.email_template_id, email.title as email_title, email.service_name as email_service, email.email_column, email.subject, email.user_created, email.body_html, email.body_design, email.language as email_language,email.table_type as email_table_type, et.sms_template_id, sms.title as sms_title, sms.service_name as sms_service, sms.contains_country_code, sms.country_code_column, sms.phone_number_column, sms.type as sms_type, sms.language as sms_language, sms.message_body, sms.table_type as sms_table_type
@@ -93,7 +95,7 @@ def get_trigger_by_name(trigger_name):
         db_cursor.execute(GET_TRIGGER_BY_NAME.format(
             trigger_name=trigger_name))
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in getting trigger by name : {e}")
         return []
     res = db_cursor.fetchall()
     return res

@@ -6,7 +6,8 @@ from .queries.create_tables import CREATE_TABLE_EVENT_LOGS, CREATE_TABLE_EVENT_T
 from .queries.create_functions import CREATE_INSERT_EVENT_LOG_FUNCTION, CREATE_INSERT_TRIGGER_FUNCTION, CREATE_UPDATE_TRIGGER_FUNCTION, CREATE_DELETE_TRIGGER_FUNCTION
 from .get_trigger import get_trigger
 from dotenv import load_dotenv
-
+import logging 
+loggger = logging.getLogger("app")
 CREATE_NOTIFY_FUNCTION = """
     CREATE OR REPLACE FUNCTION tgf_catalog.notify() RETURNS trigger AS
     $BODY$
@@ -77,7 +78,7 @@ def create_trigger(configuration):
     try:
         db_cursor.execute(CREATE_NOTIFY_TRIGGER)
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in creating trigger : {e}")
     db_cursor.execute(
         CREATE_INSERT_EVENT_LOG_FUNCTION.format(database=database))
 

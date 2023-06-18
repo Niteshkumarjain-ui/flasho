@@ -3,7 +3,8 @@ from pydantic import BaseModel
 from app.db import get_cursor
 from .sms_service import get_sms_data, get_phone_number, send_sms_request
 from .email_service import send_email_request, get_recipent_address
-
+import logging 
+logger = logging.getLogger("app")
 
 class Manual(BaseModel):
     variables: dict
@@ -71,7 +72,7 @@ def manual_trigger_data(trigger_name: str, configuration: Manual, http_response:
             }
 
     except Exception as e:
-        print("ERROR: ", e)
+        logger.exception(f"Error in triggring manual data : {e}")
 
         http_response.status_code = 400
         return {

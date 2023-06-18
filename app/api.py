@@ -8,7 +8,15 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 from .routes import v1
-from .utils import config
+from .utils import config,logs
+import sys 
+import logging 
+sys.path.append(os.getcwd())
+logs.set_logger("app")
+logger = logging.getLogger("app")
+
+
+
 
 api_key_header = APIKeyHeader(name="x-admin-secret-key", auto_error=False)
 
@@ -53,6 +61,7 @@ class AddAdminSecretKey(BaseModel):
 
 @app.post("/api/create_admin_secret")
 def create_admin_secret_key(admin_secret_key: AddAdminSecretKey):
+    logger.info("Create admin secret Method Called")
     load_dotenv()
     if "ADMIN_SECRET_KEY" in os.environ:
         return {
@@ -69,4 +78,5 @@ def create_admin_secret_key(admin_secret_key: AddAdminSecretKey):
 
 @app.get("/api/health")
 def health_check():
+    logger.info("Health Method called")
     return "health check OK"

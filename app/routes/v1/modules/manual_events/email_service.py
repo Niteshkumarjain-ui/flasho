@@ -5,7 +5,8 @@ import os
 import requests
 import json
 from app.db import get_cursor, validate_db_connection
-
+import logging 
+logger = logging.getLogger("app")
 
 def send_email_request(template_id, receipient_address, variables_data):
     # print("in_send_req_funct",variables_data , "\n")
@@ -20,16 +21,15 @@ def send_email_request(template_id, receipient_address, variables_data):
     req_headers = {
         'x-admin-secret-key': 'hello@123'
     }
-
-    print(req_body)
-
+    
+    logger.info(f"request body is : {req_body}")
     try:
         # print("in_try_block","\n")
         res = requests.post(url=endpoint, data=req_body, headers=req_headers)
-        print("my_res", res)
+        logger.info(f"result is : {res}")
         return res.json()
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in sending email request : {e}")
 
 
 GET_EMAIL_COLUMN = """Select email_column from tgf_catalog.email_templates where id = '{email_id}';"""

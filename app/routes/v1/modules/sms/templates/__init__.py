@@ -2,6 +2,9 @@ from fastapi import HTTPException
 from pydantic import BaseModel
 
 from app.db import get_cursor, validate_db_connection
+import logging 
+logger = logging.getLogger("app")
+
 
 GET_TEMPLATES = """ SELECT * FROM tgf_catalog.sms_templates; """
 
@@ -17,7 +20,7 @@ def get_sms_templates():
         return template_data
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in getting sms template : {e}")
         raise HTTPException(status_code=500, detail={
             'status': 'failed',
             'message': 'Database error, check if SMS service is initialized'
@@ -55,7 +58,7 @@ def create_sms_template(sms_template: SMSTemplate):
         return template_id
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in creating sms template : {e}")
         raise HTTPException(status_code=500, detail={
             'status': 'failed',
             'message': 'Template names must be unique'

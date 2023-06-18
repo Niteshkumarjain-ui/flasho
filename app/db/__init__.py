@@ -4,7 +4,8 @@ from psycopg2 import Error
 import psycopg2.extras
 from fastapi import HTTPException
 from dotenv import load_dotenv
-
+import logging 
+logger = logging.getLogger("app")
 
 def get_cursor():
     load_dotenv()
@@ -18,8 +19,8 @@ def get_cursor():
         "port": os.environ.get('PG_PORT'),
         "database": os.environ.get('PG_DATABASE')
     }
-
-    print(connectionParameters)
+    
+    logger.info(f"connection parameter are : {connectionParameters}")
 
     try:
         connection = psycopg2.connect(**connectionParameters)
@@ -31,7 +32,7 @@ def get_cursor():
         return cursor
 
     except (Exception, Error) as error:
-        print("Error while connecting to PostgreSQL ", error)
+        logger.exception(f"Error while connecting to PostgreSQL : {error}")
         del os.environ['PG_USER'], os.environ['PG_PASSWORD'], os.environ['PG_HOST'], os.environ['PG_PORT'], os.environ['PG_DATABASE']
         raise HTTPException(status_code=500, detail={
             'status': 'failed',

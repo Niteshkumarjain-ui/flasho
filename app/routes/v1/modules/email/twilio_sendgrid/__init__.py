@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 
 from app.utils import config
 import app.routes.v1.modules.email as email_service
-
+import logging 
+logger = logging.getLogger("app")
 
 class SendgridParams(BaseModel):
     sendgrid_api_key: str
@@ -34,11 +35,11 @@ def initialize_sendgrid(sendgrid_params: SendgridParams):
 
         # Send an HTTP POST request to /mail/send
         response = sg.client.mail.send.post(request_body=mail_json)
-        print(response.status_code)
+        logger.info(f"Status code: {response.status_code}")
         # print(response.headers)
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in intiallizing send grid : {e}")
         raise HTTPException(status_code=400, detail={
             'status': 'failed',
             'message': 'Check credentials'
@@ -115,7 +116,7 @@ def send_email_sendgrid(sendgrid_params: SgMailParams, http_response: Response):
         }
 
     except Exception as e:
-        print("ERROR: ", e)
+        logger.exception(f"Error in sending email sendgrid: {e}")
 
         http_response.status_code = 500
         return {

@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 
 import app.routes.v1.modules.sms as sms_service
 from app.utils import config
-
+import logging 
+logger = logging.getLogger("app")
 
 class TwilioParams(BaseModel):
     twilio_account_sid: str
@@ -28,6 +29,7 @@ def initialize_twilio_sms(twilio_params: TwilioParams):
         )
 
     except Exception as e:
+        logger.exception(f"Error in intiallizing twilio sms service : {e}")
         raise HTTPException(status_code=400, detail={
             'status': 'Invalid credentials',
             'message': "Kindly recheck the twilio account credentials"
@@ -83,7 +85,7 @@ def send_sms_twilio(sms_parameters: TwilioSMSParameters, http_response: Response
     senders_phone_number = os.environ['TWILIO_SENDER_PHONE_NUMBER']
 
     client = Client(account_sid, auth_token)
-    print(client, "\n")
+    logger.info(f"clients are : {client}\n")
     try:
         message = client.messages.create(
             body=sms_parameters.body,
@@ -91,7 +93,7 @@ def send_sms_twilio(sms_parameters: TwilioSMSParameters, http_response: Response
             to=sms_parameters.receipient_phone_number
         )
         # print(type(message), "\n", "this is")
-        print(message.sid)
+        logger.info(f"message sid is :{message.sid}")
         response = {"message_sid": message.sid}
 
         return {
@@ -101,7 +103,7 @@ def send_sms_twilio(sms_parameters: TwilioSMSParameters, http_response: Response
         }
 
     except Exception as e:
-        print("ERROR: ", e)
+        logger.exception(f"Error in sending sms through twilio service : {e}")
         http_response.status_code = 500
         return {
             'status': 'failed',

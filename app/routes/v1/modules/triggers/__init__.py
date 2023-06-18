@@ -12,7 +12,8 @@ from .events.delete import delete_trigger
 from .events.get_trigger import get_trigger, get_trigger_by_name
 from .events.alter import update_trigger
 from .events.event_logs import get_logs_count, get_logs_data
-
+import logging 
+logger = logging.getLogger("app")
 
 class Tables(BaseModel):
     tables: list

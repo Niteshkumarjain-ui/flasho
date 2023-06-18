@@ -7,6 +7,8 @@ from . import sns
 from . import twilio
 from . import pinpoint_sms
 from .templates import SMSTemplate, create_sms_template, get_sms_templates
+import logging
+logger = logging.getLogger("app")
 
 router = APIRouter()
 
@@ -33,7 +35,7 @@ def initialize_sms_db():
         db_cursor = get_cursor()
         db_cursor.execute(CREATE_SCHEMA_AND_TABLE)
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in intiallizing sms db : {e}")
         raise HTTPException(
             status_code=500, detail={"status": "failed", "message": "Database error"}
         )
@@ -126,7 +128,7 @@ def send_templated_sms(template_id: int, phone_numbers: list[str], variables_dat
         service_name = template_data["service_name"]
 
     except Exception as e:
-        print("ERROR: ", e)
+        logger.exception(f"Error in db connection in send template sms : {e}")
         http_response.status_code = 400
         return {"status": "failed", "message": "Template id not found"}
 
@@ -147,13 +149,13 @@ def send_templated_sms(template_id: int, phone_numbers: list[str], variables_dat
 
         # print("outof loop")
     except Exception as e:
-        print("ERROR: ", e)
+        logger.exception(f"Error in column name is not present in trigger data db : {e}")
         http_response.status_code = 400
         return {
             'status': 'failed',
             'message': 'Variable error, check if the column name is present in trigger data'
         }
-
+    logger.info(f"message body is : {message_body}")
     print(message_body)
     response = {}
 

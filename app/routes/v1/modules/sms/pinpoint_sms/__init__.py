@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 
 import app.routes.v1.modules.sms as sms_service
 from app.utils import config
-
+import logging 
+logger = logging.getLogger("app")
 
 class PinpointParams(BaseModel):
     aws_access_key_id: str
@@ -26,6 +27,7 @@ def initialize_pinpoint_sms_service(pinpoint_parameters: PinpointParams):
                            region_name=pinpoint_parameters.aws_region)
         sts.get_caller_identity()
     except Exception as e:
+        logger.exception(f"Error in intiallizing pinpoint sms service : {e}")
         raise HTTPException(status_code=400, detail={
             'status': 'Invalid credentials',
             'message': "Kindly recheck the aws account credentials"
@@ -112,7 +114,7 @@ def send_sms_pinpoint(sms_parameters: PinpointSMSParameters, http_response: Resp
             "service_response": response
         }
     except Exception as e:
-        print("ERROR: ", e)
+        logger.exception(f"Error in sending sms pinpoint : {e}")
         http_response.status_code = 500
         return {
             'status': 'failed',

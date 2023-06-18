@@ -14,6 +14,8 @@ from ..sms.sns import initialize_sns_service, SNSParameters
 from ..sms.twilio import initialize_twilio_sms, TwilioParams
 from ..sms.pinpoint_sms import initialize_pinpoint_sms_service, PinpointParams
 from app.utils import config
+import logging 
+logger = logging.getLogger("app")
 
 
 class ConnectionParameters(BaseModel):
@@ -41,7 +43,7 @@ router = APIRouter()
 
 @router.post("/set_connection_url", response_model=ResponseStatus)
 def set_connection_url(connectionParameters: ConnectionParameters):
-    print(connectionParameters)
+    logger.info(f"connection parameters are : {ConnectionParameters}")
     if (connectionParameters.parameter_type == 'credentials'):
 
         config.set_env_variable("PG_USER", connectionParameters.user)
@@ -55,8 +57,7 @@ def set_connection_url(connectionParameters: ConnectionParameters):
     cursor.execute("SELECT version();")
 
     record = cursor.fetchone()
-
-    print("You are connected to - ", record, "\n")
+    logger.info(f"You are connected to : {record} \n")
     return {
         "status": "success",
         "message": "You are connected to the database"
@@ -189,7 +190,7 @@ def add_users_table(users_table_data: UserTable):
         }
 
     except Exception as e:
-        print("ERROR: ", e)
+        logger.exception(f"Error in adding user in table  : {e}")
         raise HTTPException(status_code=400, detail={
             'status': 'failed',
             'message': "error in inserting variable"
@@ -210,7 +211,7 @@ def get_users_table():
         return user_table
 
     except Exception as e:
-        print(e)
+        logger.exception(f"Error in getting user from table : {e}")
 
         raise HTTPException(status_code=500, detail={
             'status': 'failed',
